@@ -3,6 +3,7 @@ package com.epicodus.instantmessage.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,12 +13,17 @@ import android.widget.EditText;
 
 import com.epicodus.instantmessage.Constants;
 import com.epicodus.instantmessage.R;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private Firebase mSavedMessageRef;
+    private ValueEventListener mSavedMessageRefListener;
     @Bind(R.id.messageEditText) EditText mMessageEditText;
     @Bind(R.id.authorEditText) EditText mAuthorEditText;
     @Bind(R.id.submitButton) Button mSubmitButton;
@@ -35,6 +41,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
         mSubmitButton.setOnClickListener(this);
+        mSavedMessageRef = new Firebase(Constants.FIREBASE_URL_SEARCHED_MESSAGE);
+
+        mSavedMessageRefListener = mSavedMessageRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        mSavedMessageRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String messages = dataSnapshot.getValue().toString();
+                Log.d("Message Updated", messages);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override
