@@ -6,6 +6,7 @@ import org.parceler.Parcel;
 public class Message {
     String message;
     String author;
+    private String pushId;
 
     public Message() {}
 
@@ -20,4 +21,11 @@ public class Message {
     public String getAuthor() {
         return author;
     }
+    public String getPushId() {
+        return pushId;
+    }
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.epicodus.instantmessage.ui;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ public class MessageDetailFragment extends Fragment implements View.OnClickListe
     @Bind(R.id.messageTextView) TextView mMessageLabel;
     @Bind(R.id.authorTextView) TextView mAuthorLabel;
     @Bind(R.id.saveMessage) Button mSaveMessageButton;
+    private SharedPreferences mSharedPreferences;
 
     private Message mMessage;
 
@@ -43,6 +46,7 @@ public class MessageDetailFragment extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMessage = Parcels.unwrap(getArguments().getParcelable("message"));
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
     }
 
@@ -60,9 +64,17 @@ public class MessageDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mSaveMessageButton) {
-            Firebase ref = new Firebase(Constants.FIREBASE_URL_MESSAGES);
-            ref.push().setValue(mMessage);
-            Toast.makeText(getContext(),"saved",Toast.LENGTH_SHORT).show();
+            String userUid = mSharedPreferences.getString(Constants.KEY_UID, null);
+            Firebase userMessagesFirebaseRef = new Firebase(Constants.FIREBASE_URL_MESSAGES).child(userUid);
+            Firebase pushRef = userMessagesFirebaseRef.push();
+            String messagePushId = pushRef.getKey();
+            mMessage.setPushId(messagePushId);
+            userMessagesFirebaseRef.setValue(mMessage);
+            Toast.makeText(getContext(),"Saved", Toast.LENGTH_SHORT).show();
+
+//            Firebase ref = new Firebase(Constants.FIREBASE_URL_MESSAGES);
+//            ref.push().setValue(mMessage);
+//            Toast.makeText(getContext(),"saved",Toast.LENGTH_SHORT).show();
         }
     }
 }

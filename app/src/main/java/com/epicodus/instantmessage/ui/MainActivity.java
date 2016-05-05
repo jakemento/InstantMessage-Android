@@ -78,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String message = mMessageEditText.getText().toString();
             String author = mAuthorEditText.getText().toString();
             saveMessageToFirebase(message);
-//            intent.putExtra("message", message);
-//            intent.putExtra("author", author);
-//            startActivity(intent);
+            intent.putExtra("message", message);
+            intent.putExtra("author", author);
+            startActivity(intent);
         }
 
         if (v == mSavedMessagesButton) {

@@ -1,5 +1,7 @@
 package com.epicodus.instantmessage.ui;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ public class SavedMessageListActivity extends AppCompatActivity {
     private Query mQuery;
     private Firebase mFirebaseMessagesRef;
     private FirebaseMessageListAdapter mAdapter;
+    private SharedPreferences mSharedPreferences;
 
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -27,7 +30,7 @@ public class SavedMessageListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ButterKnife.bind(this);
-
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mFirebaseMessagesRef = new Firebase(Constants.FIREBASE_URL_MESSAGES);
 
         setUpFirebaseQuery();
@@ -35,7 +38,9 @@ public class SavedMessageListActivity extends AppCompatActivity {
     }
 
     private void setUpFirebaseQuery() {
-        String message = mFirebaseMessagesRef.toString();
+        String userUid = mSharedPreferences.getString(Constants.KEY_UID, null);
+
+        String message = mFirebaseMessagesRef.child(userUid).toString();
         mQuery = new Firebase(message);
     }
 
