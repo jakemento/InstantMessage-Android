@@ -6,14 +6,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.epicodus.instantmessage.Constants;
 import com.epicodus.instantmessage.R;
 import com.firebase.client.Firebase;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    @Bind(R.id.messageEditText) EditText mMessageEditText;
+    @Bind(R.id.authorEditText) EditText mAuthorEditText;
+    @Bind(R.id.submitButton) Button mSubmitButton;
+
+
+
+
     private Firebase mFirebaseRef;
 
 
@@ -23,7 +34,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
+        mSubmitButton.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mSubmitButton) {
+            Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+            String message = mMessageEditText.getText().toString();
+            String author = mAuthorEditText.getText().toString();
+            intent.putExtra("message", message);
+            intent.putExtra("author", author);
+            startActivity(intent);
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
