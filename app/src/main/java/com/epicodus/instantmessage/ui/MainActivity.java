@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mSubmitButton) {
-            Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+            Intent intent = new Intent(MainActivity.this, MessageListActivity.class);
             String message = mMessageEditText.getText().toString();
             String author = mAuthorEditText.getText().toString();
             intent.putExtra("message", message);

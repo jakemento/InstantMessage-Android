@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by Guest on 5/5/16.
- */
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MessageViewHolder> {
     private ArrayList<com.epicodus.instantmessage.models.Message> mMessages = new ArrayList<>();
     private Context mContext;

@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MessageActivity"></activity>
+        <activity android:name=".ui.MessageListActivity"></activity>
     </application>
 
 </manifest>
