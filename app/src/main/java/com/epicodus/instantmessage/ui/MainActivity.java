@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.messageEditText) EditText mMessageEditText;
     @Bind(R.id.authorEditText) EditText mAuthorEditText;
     @Bind(R.id.submitButton) Button mSubmitButton;
+    @Bind(R.id.savedMessagesButton) Button mSavedMessagesButton;
 
 
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
         mSubmitButton.setOnClickListener(this);
         mSavedMessageRef = new Firebase(Constants.FIREBASE_URL_SEARCHED_MESSAGE);
+        mSavedMessagesButton.setOnClickListener(this);
 
         mSavedMessageRefListener = mSavedMessageRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            intent.putExtra("message", message);
 //            intent.putExtra("author", author);
 //            startActivity(intent);
+        }
+
+        if (v == mSavedMessagesButton) {
+            Intent intent = new Intent(MainActivity.this, SavedMessageListActivity.class);
+            startActivity(intent);
         }
     }
             public void saveMessageToFirebase(String message) {

@@ -61,5 +61,15 @@
         android:layout_below="@+id/authorEditText"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="my saved messages"
+        android:id="@+id/savedMessagesButton"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
