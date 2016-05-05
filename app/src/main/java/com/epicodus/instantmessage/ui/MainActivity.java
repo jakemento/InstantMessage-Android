@@ -43,11 +43,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, MessageListActivity.class);
             String message = mMessageEditText.getText().toString();
             String author = mAuthorEditText.getText().toString();
-            intent.putExtra("message", message);
-            intent.putExtra("author", author);
-            startActivity(intent);
+            saveMessageToFirebase(message);
+//            intent.putExtra("message", message);
+//            intent.putExtra("author", author);
+//            startActivity(intent);
         }
     }
+            public void saveMessageToFirebase(String message) {
+                Firebase savedMessageRef = new Firebase(Constants.FIREBASE_URL_SEARCHED_MESSAGE);
+                savedMessageRef.push().setValue(message);
+
+            }
+
 
 
 
