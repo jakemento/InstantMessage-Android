@@ -1,8 +1,8 @@
 package com.epicodus.instantmessage.models;
 
-/**
- * Created by Guest on 5/5/16.
- */
+import org.parceler.Parcel;
+
+@Parcel
 public class Message {
     String message;
     String author;
