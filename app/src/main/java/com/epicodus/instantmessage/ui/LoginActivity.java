@@ -2,6 +2,7 @@ package com.epicodus.instantmessage.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,49 +31,60 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mSharedPreferencesEditor;
 
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         mRegisterTextView.setOnClickListener(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        mSharedPreferencesEditor = mSharedPreferences.edit();
+        mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
         mPasswordLoginButton.setOnClickListener(this);
+
     }
+
     @Override
     public void onClick(View view) {
-        if (view == mPasswordLoginButton) {
-            loginWithPassword();
-        }
-        if (view == mRegisterTextView) {
+        if(view == mRegisterTextView) {
             Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
             startActivity(intent);
             finish();
         }
+        if(view == mPasswordLoginButton) {
+            loginWithPassword();
+        }
     }
+
     public void loginWithPassword() {
         String email = mEmailEditText.getText().toString();
         String password = mPasswordEditText.getText().toString();
 
         if (email.equals("")) {
-            mEmailEditText.setError("Please enter your email");
+            mEmailEditText.setError("Please Enter your email");
         }
         if (password.equals("")) {
-            mPasswordEditText.setError("Password cannot be blank");
+            mPasswordEditText.setError("Please can't be blank");
         }
 
         mFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
-         @Override
+
+            @Override
             public void onAuthenticated(AuthData authData) {
-             if (authData != null) {
-                 String userUid = authData.getUid();
-                 mSharedPreferencesEditor.putString(Constants.KEY_UID, userUid).apply();
-                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                 startActivity(intent);
-                 finish();
-                 String userInfo = authData.toString();
-                 Log.d(TAG, "Currently logged in: " + userInfo);
-             }
-         }
+                if (authData != null) {
+                    String userId = authData.getUid();
+                    mSharedPreferencesEditor.putString(Constants.KEY_UID, userId).apply();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                    String userInfo = authData.toString();
+                    Log.d(TAG, "Currently logged in: " + userInfo);
+                }
+            }
+
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 switch (firebaseError.getCode()) {
