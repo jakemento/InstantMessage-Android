@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.epicodus.instantmessage.Constants;
 import com.epicodus.instantmessage.R;
+import com.epicodus.instantmessage.models.Message;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -57,29 +58,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mSavedMessageRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String messages = dataSnapshot.getValue().toString();
-                Log.d("Message Updated", messages);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+//        mSavedMessageRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String messages = dataSnapshot.getValue().toString();
+//                Log.d("Message Updated", messages);
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
     }
 
     @Override
     public void onClick(View v) {
         if (v == mSubmitButton) {
             Intent intent = new Intent(MainActivity.this, MessageListActivity.class);
-            String message = mMessageEditText.getText().toString();
+            String messageText = mMessageEditText.getText().toString();
             String author = mAuthorEditText.getText().toString();
+
+            Message message = new Message(messageText, author);
+
             saveMessageToFirebase(message);
-            intent.putExtra("message", message);
-            intent.putExtra("author", author);
             startActivity(intent);
         }
 
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
     }
-            public void saveMessageToFirebase(String message) {
+            public void saveMessageToFirebase(Message message) {
                 Firebase savedMessageRef = new Firebase(Constants.FIREBASE_URL_SEARCHED_MESSAGE);
                 savedMessageRef.push().setValue(message);
 

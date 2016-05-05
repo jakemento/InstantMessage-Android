@@ -13,6 +13,7 @@ import com.firebase.client.Query;
  * Created by Guest on 5/5/16.
  */
 public class FirebaseMessageListAdapter extends FirebaseRecyclerAdapter<MessageViewHolder, Message> {
+
     public FirebaseMessageListAdapter(Query query, Class<Message> itemClass) {
         super(query, itemClass);
     }

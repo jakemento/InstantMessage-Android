@@ -44,6 +44,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
         mPasswordLoginButton.setOnClickListener(this);
 
+        mEmailEditText.setText("admin@gmail.com");
+        mPasswordEditText.setText("admin");
+
     }
 
     @Override
